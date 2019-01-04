@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 """
 French cities tide times
+
+Agent agregateur #2
+
 @author: jess
 """
-import requests,datetime
-
-marseille_coords="&lat=43.299999&lon=5.366700"
+import requests, datetime, sys, socket, time
 
 def get_city_tide(coords):
     
@@ -36,12 +37,38 @@ def get_city_tide(coords):
         out = "\n City Not Found "
         log.write(out)
         log.close()
+
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect the socket to the port where the server is listening
+server_address = ('localhost', 10000)
+
+print >>sys.stderr, 'connecting to %s port %s' % server_address
+sock.connect(server_address)
+
+while(True):
+    
+    marseille_coords="&lat=43.299999&lon=5.366700"
+    marseille_height = get_city_tide(marseille_coords)
+    
+    bordeaux_coords="&lat=44.667&lon=-1.167"
+    bordeaux_height = get_city_tide(bordeaux_coords)
+    
+    le_havre_coords="&lat=49.483299&lon=0.116700"
+    le_havre_height = get_city_tide(le_havre_coords)
+    
+    try:
+        # Send data
+        message = [marseille_height, bordeaux_height, le_havre_height]
+        print >>sys.stderr, 'sending data to server'
+        sock.sendall(str(message))
+    
+    finally:
+        # Clean up the connection
+        print >>sys.stderr, 'closing socket'
+        sock.close()
+        sock = socket.socket()
         
-marseille_coords="&lat=43.299999&lon=5.366700"
-marseille_height = get_city_tide(marseille_coords)
-
-bordeaux_coords="&lat=44.667&lon=-1.167"
-bordeaux_height = get_city_tide(bordeaux_coords)
-
-le_havre_coords="&lat=49.483299&lon=0.116700"
-le_havre_height = get_city_tide(le_havre_coords)
+    #wait one minute
+    time.sleep(60)

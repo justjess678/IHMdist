@@ -13,7 +13,7 @@ Agent agregateur #1
 # using openweathermap api 
 
 # import required modules 
-import requests, json, string, datetime, time
+import requests, json, string, datetime, time, sys, socket
 
 def get_stats_city(api_key,city_name):
     
@@ -87,12 +87,35 @@ def get_stats_city(api_key,city_name):
         log.close()
             
 #main
+    
+# Create a TCP/IP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect the socket to the port where the server is listening
+server_address = ('localhost', 10000)
+
 while(True):
+    
+    print >>sys.stderr, 'connecting to %s port %s' % server_address
+    sock.connect(server_address)
+    
     #Toulouse weather info
     le_havre_info = get_stats_city("236dc0356af0cfcbe13dcf8cba1629e5","le havre")
     #Bordeaux weather info
     bordeaux_info = get_stats_city("ddb93c9878aa673d01095952d2761353","bordeaux")
     #Paris weather info
     marseille_info = get_stats_city("e418c8436cdee1933bcc58c81786747f","marseille")
+    try:
+        # Send data
+        message = [marseille_info, bordeaux_info, le_havre_info]
+        print >>sys.stderr, 'sending data to server'
+        sock.sendall(str(message))
+    
+    finally:
+        # Clean up the connection
+        print >>sys.stderr, 'closing socket'
+        sock.close()
+        sock = socket.socket()
+        
     #wait one minute
     time.sleep(60)
