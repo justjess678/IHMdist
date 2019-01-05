@@ -99,11 +99,11 @@ while(True):
     print >>sys.stderr, 'connecting to %s port %s' % server_address
     sock.connect(server_address)
     
-    #Toulouse weather info
-    le_havre_info = get_stats_city("236dc0356af0cfcbe13dcf8cba1629e5","le havre")
     #Bordeaux weather info
     bordeaux_info = get_stats_city("ddb93c9878aa673d01095952d2761353","bordeaux")
-    #Paris weather info
+    #le havre weather info
+    le_havre_info = get_stats_city("236dc0356af0cfcbe13dcf8cba1629e5","le havre")
+    #Marseille weather info
     marseille_info = get_stats_city("e418c8436cdee1933bcc58c81786747f","marseille")
     try:
         # Send data

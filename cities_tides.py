@@ -17,7 +17,7 @@ def get_city_tide(coords):
     out = out  + "\n"    
     log.write(out)
 
-    api_key = "8e83d75b-4891-4757-8de4-3526f7ff4608"
+    api_key = "b1a34599-2b7e-4174-9da5-6988170a2ed8"
     # base_url variable to store url 
     base_url = "https://www.worldtides.info/api?"
     now_epoch = int(datetime.datetime.now().strftime("%s"))
@@ -60,7 +60,7 @@ while(True):
     
     try:
         # Send data
-        message = [marseille_height, bordeaux_height, le_havre_height]
+        message = [bordeaux_height, le_havre_height, marseille_height]
         print >>sys.stderr, 'sending data to server'
         sock.sendall(str(message))
     
