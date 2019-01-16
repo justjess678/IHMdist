@@ -54,11 +54,11 @@ def get_max_city(data):
         i=i+1
     if city > -1:
         if city==0:
-            return 'Bordeaux has the highest '
+            return 'Bordeaux'
         if city==1:
-            return 'Le Havre has the highest '
+            return 'Le Havre'
         if city==2:
-            return 'Marseille has the highest '
+            return 'Marseille'
     else:
         return 'Error comparing cities'
 
@@ -101,7 +101,7 @@ while True:
             if data.count("height")>=3:
                 tides = get_height(data)
                 print(tides)
-                print(get_max_city(tides), 'tide')
+                print(get_max_city(tides), ' has the highest tide')
                 data = ""
             if not data:
                 print >>sys.stderr, 'no more data from', client_address1
